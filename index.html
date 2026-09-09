@@ -13,9 +13,13 @@
 
 <div class="app-container">
     <!-- Header -->
+    <!-- Header -->
     <div class="bg-emerald-500 text-white p-4 text-center font-bold text-lg rounded-t-3xl shadow-md z-10 flex justify-between items-center">
         <span>Danang Green Travel</span>
-        <i class="fas fa-bell"></i>
+        <div>
+            <i class="fas fa-moon cursor-pointer mr-4 text-xl hover:text-emerald-200 transition" id="theme-icon" onclick="toggleNightMode()"></i>
+            <i class="fas fa-bell"></i>
+        </div>
     </div>
 
     <!-- Màn hình 0: Danh sách Tour -->
@@ -162,8 +166,7 @@
                     <p class="font-bold text-gray-800 text-sm">Đà Nẵng - Hội An 3N2Đ</p>
                     <p class="text-xs text-gray-500">Thanh toán Nhà hàng Biển Đông (20 suất Hải sản)</p>
                 </div>
-                <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded font-bold">Chờ duyệt</span>
-            </div>
+<span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded font-bold whitespace-nowrap flex-shrink-0">Chờ duyệt</span>            </div>
             <p class="font-bold text-red-500 mb-3">8.200.000 VNĐ</p>
             <div class="flex justify-between gap-2">
                 <button onclick="approve('req-bien-dong', false)" class="flex-1 bg-red-100 text-red-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-times mr-1"></i>Từ chối</button>

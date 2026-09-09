@@ -213,3 +213,19 @@ function approve(id, isApproved) {
     }
     setTimeout(() => { el.style.display = 'none'; }, 2000);
 }
+
+// Bật/tắt Night Mode
+function toggleNightMode() {
+    const container = document.querySelector('.app-container');
+    container.classList.toggle('dark-theme');
+    
+    // Đổi icon giữa mặt trăng (tối) và mặt trời (sáng)
+    const icon = document.getElementById('theme-icon');
+    if (container.classList.contains('dark-theme')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+    }
+}
