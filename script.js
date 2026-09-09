@@ -12,7 +12,11 @@ function switchTab(tabId, element) {
 // Từ Danh sách Tour đi vào Chi tiết 1 Tour (Dashboard)
 function openTour(tourName) {
     document.getElementById('tour-name-title').innerText = tourName;
-    switchTab('home', document.getElementById('nav-tour-list'));
+    switchTab('home'); // Không highlight nav-item nào để người dùng biết đang ở trang con
+    
+    // Đảm bảo tab báo cáo quay lại trạng thái overview nếu người dùng tự bấm vào báo cáo sau này
+    document.getElementById('report-details').classList.add('hidden');
+    document.getElementById('report-overview').classList.remove('hidden');
 }
 
 // Từ Dashboard quay lại Danh sách Tour
@@ -20,7 +24,11 @@ function backToTourList() {
     switchTab('tour-list', document.getElementById('nav-tour-list'));
 }
 
-// Data chi tiết khi bấm vào biểu đồ
+// Dữ liệu hợp lý hóa: Tổng chi 88tr (100%)
+// Lưu trú (45%) = 39.600.000 VNĐ
+// Vận chuyển (35%) = 30.800.000 VNĐ
+// Ăn uống & Vé (20%) = 17.600.000 VNĐ
+
 const detailData = {
     0: { // Lưu trú
         title: "Chi tiết dòng tiền: LƯU TRÚ (45%)",
@@ -32,9 +40,10 @@ const detailData = {
                     <span class="bg-blue-200 text-blue-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span>
                 </div>
                 <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0400123456</p>
-                <p class="text-sm mt-1 text-gray-700">Hạng mục: Thuê 20 phòng đôi (3 đêm)</p>
-                <p class="font-bold text-red-500 mt-2 text-right">45.000.000 VNĐ</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: 20 phòng x 3 đêm x 660k</p>
+                <p class="font-bold text-red-500 mt-2 text-right">39.600.000 VNĐ</p>
             </div>
+            <div class="text-right text-xs font-bold text-gray-600 mt-2">Tổng hạng mục: 39.600.000 VNĐ</div>
         `
     },
     1: { // Vận chuyển
@@ -47,8 +56,8 @@ const detailData = {
                     <span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span>
                 </div>
                 <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0101234599</p>
-                <p class="text-sm mt-1 text-gray-700">Hạng mục: Thuê xe 45 chỗ (3 ngày)</p>
-                <p class="font-bold text-red-500 mt-2 text-right">15.000.000 VNĐ</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: Thuê xe 45 chỗ x 3 ngày</p>
+                <p class="font-bold text-red-500 mt-2 text-right">10.800.000 VNĐ</p>
             </div>
             <div class="p-3 border rounded-lg bg-emerald-50 shadow-sm">
                 <div class="flex justify-between items-start">
@@ -56,9 +65,10 @@ const detailData = {
                     <span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span>
                 </div>
                 <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0102345678</p>
-                <p class="text-sm mt-1 text-gray-700">Hạng mục: Vé máy bay khứ hồi (20 khách)</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: Vé bay khứ hồi (20 khách)</p>
                 <p class="font-bold text-red-500 mt-2 text-right">20.000.000 VNĐ</p>
             </div>
+            <div class="text-right text-xs font-bold text-gray-600 mt-2">Tổng hạng mục: 30.800.000 VNĐ</div>
         `
     },
     2: { // Ăn uống
@@ -71,7 +81,7 @@ const detailData = {
                     <span class="bg-yellow-200 text-yellow-800 text-[10px] px-2 py-1 rounded font-bold">Chờ duyệt</span>
                 </div>
                 <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0400987654</p>
-                <p class="text-sm mt-1 text-gray-700">Hạng mục: 20 suất Hải sản + Nước uống</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: 20 suất Hải sản x 410k</p>
                 <p class="font-bold text-red-500 mt-2 text-right">8.200.000 VNĐ</p>
             </div>
             <div class="p-3 border rounded-lg bg-amber-50 shadow-sm">
@@ -80,18 +90,16 @@ const detailData = {
                     <span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span>
                 </div>
                 <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0401112223</p>
-                <p class="text-sm mt-1 text-gray-700">Hạng mục: 20 vé cáp treo khứ hồi</p>
-                <p class="font-bold text-red-500 mt-2 text-right">11.800.000 VNĐ</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: 20 vé cáp treo khứ hồi x 470k</p>
+                <p class="font-bold text-red-500 mt-2 text-right">9.400.000 VNĐ</p>
             </div>
+            <div class="text-right text-xs font-bold text-gray-600 mt-2">Tổng hạng mục: 17.600.000 VNĐ</div>
         `
     }
 };
 
-// Hiển thị chi tiết Drill-down vào mục Báo Cáo
+// Bấm vào biểu đồ để xem chi tiết đối tác
 function showReportDetail(index) {
-    // Chuyển sang tab Báo cáo
-    switchTab('report', document.getElementById('nav-report'));
-    
     // Đổ dữ liệu
     const data = detailData[index];
     const titleEl = document.getElementById('detail-title');
@@ -99,15 +107,20 @@ function showReportDetail(index) {
     titleEl.className = "font-bold text-base " + data.color;
     document.getElementById('detail-content').innerHTML = data.html;
     
-    // Ẩn tổng quan, hiện chi tiết
+    // Chuyển UI sang màn hình báo cáo, ẩn overview đi
+    switchTab('report');
     document.getElementById('report-overview').classList.add('hidden');
     document.getElementById('report-details').classList.remove('hidden');
 }
 
-// Đóng chi tiết, quay lại tổng quan báo cáo
-function closeDetails() {
+// Bấm nút Quay lại ở trang Chi tiết Đối tác
+function backToTourDashboard() {
+    // Ẩn chi tiết, hiện lại overview báo cáo
     document.getElementById('report-details').classList.add('hidden');
     document.getElementById('report-overview').classList.remove('hidden');
+    
+    // Quay thẳng về lại màn hình Dashboard của Tour (Tab home)
+    switchTab('home');
 }
 
 // Xử lý giả lập quét OCR
@@ -158,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 plugins: { 
                     legend: { position: 'bottom', labels: { boxWidth: 12 } }
                 },
-                // Bắt sự kiện Click vào biểu đồ (Drill-down)
                 onClick: (event, elements) => {
                     if (elements.length > 0) {
                         const index = elements[0].index;

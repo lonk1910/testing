@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danang Green Travel MVP - V2</title>
+    <title>Danang Green Travel MVP - V3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,7 +18,7 @@
         <i class="fas fa-bell"></i>
     </div>
 
-    <!-- Màn hình 0: Danh sách Tour (Mới) -->
+    <!-- Màn hình 0: Danh sách Tour -->
     <div id="screen-tour-list" class="screen active p-4">
         <h2 class="font-bold text-gray-700 mb-4"><i class="fas fa-list-ul mr-2"></i>Danh sách Tour đang chạy</h2>
         
@@ -51,18 +51,6 @@
                 <span>Đã chi: 10%</span>
             </div>
         </div>
-
-        <!-- Tour 3 -->
-        <div class="bg-gray-50 p-4 rounded-xl shadow-sm mb-3 border-l-4 border-gray-400 opacity-70">
-            <div class="flex justify-between items-start mb-2">
-                <p class="font-bold text-gray-600">Huế - Phong Nha 4N3Đ</p>
-                <span class="bg-gray-200 text-gray-600 text-[10px] px-2 py-1 rounded font-bold">Đã kết thúc</span>
-            </div>
-            <div class="flex justify-between text-xs text-gray-500 mt-2 border-t pt-2">
-                <span>Ngân sách: 80tr</span>
-                <span class="text-emerald-600 font-bold">Thực chi: 75tr</span>
-            </div>
-        </div>
     </div>
 
     <!-- Màn hình 1: Dashboard (Chi tiết 1 Tour) -->
@@ -77,7 +65,7 @@
         </div>
 
         <div class="bg-white p-4 rounded-xl shadow-sm mb-4 relative">
-            <p class="text-center text-xs text-gray-400 mb-2">(Bấm vào các phần của biểu đồ để xem chi tiết đối tác)</p>
+            <p class="text-center text-xs text-gray-400 mb-2">(Bấm vào biểu đồ để xem chi tiết đối tác)</p>
             <canvas id="expenseChart" width="200" height="200" class="cursor-pointer"></canvas>
         </div>
 
@@ -137,68 +125,51 @@
                 </div>
                 <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded font-bold">Chờ duyệt</span>
             </div>
-            <p class="font-bold text-red-500 mb-3">25.000.000 VNĐ</p>
+            <p class="font-bold text-red-500 mb-3">9.400.000 VNĐ</p>
             <div class="flex justify-between gap-2">
                 <button onclick="approve('req-1', false)" class="flex-1 bg-red-100 text-red-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-times mr-1"></i>Từ chối</button>
                 <button onclick="approve('req-1', true)" class="flex-1 bg-emerald-100 text-emerald-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-check mr-1"></i>Đồng ý duyệt</button>
-            </div>
-        </div>
-
-        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-400" id="req-2">
-            <div class="flex justify-between items-start mb-2">
-                <div>
-                    <p class="font-bold text-gray-800 text-sm">HDV Trần Thị B</p>
-                    <p class="text-xs text-gray-500">Tiền ăn trưa nhà hàng Hải Sản</p>
-                </div>
-                <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded font-bold">Chờ duyệt</span>
-            </div>
-            <p class="font-bold text-red-500 mb-3">8.200.000 VNĐ</p>
-            <div class="flex justify-between gap-2">
-                <button onclick="approve('req-2', false)" class="flex-1 bg-red-100 text-red-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-times mr-1"></i>Từ chối</button>
-                <button onclick="approve('req-2', true)" class="flex-1 bg-emerald-100 text-emerald-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-check mr-1"></i>Đồng ý duyệt</button>
             </div>
         </div>
     </div>
 
     <!-- Màn hình 4: Báo cáo -->
     <div id="screen-report" class="screen p-4">
-        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-file-invoice-dollar mr-2"></i>Báo cáo Dòng tiền</h2>
+        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-file-invoice-dollar mr-2"></i>Báo cáo Dòng tiền Tour</h2>
         
-        <!-- Tổng quan báo cáo (ẩn khi hiển thị chi tiết Drill-down) -->
+        <!-- Tổng quan báo cáo của riêng 1 Tour -->
         <div id="report-overview" class="bg-white rounded-xl shadow-sm overflow-hidden text-sm">
-            <div class="bg-emerald-100 p-3 flex justify-between font-bold text-emerald-800">
-                <span>DÒNG TIỀN VÀO</span>
-                <span>+ 150.000.000</span>
+            <div class="p-3 bg-gray-100 border-b font-bold text-gray-800 text-center">
+                ĐÀ NẴNG - HỘI AN 3N2Đ
             </div>
-            <div class="p-3 border-b flex justify-between text-gray-600">
-                <span>- Thu tiền cọc Tour ĐN-HA</span>
-                <span>50.000.000</span>
-            </div>
-            <div class="p-3 flex justify-between text-gray-600">
-                <span>- Thu tất toán Tour Huế</span>
-                <span>100.000.000</span>
+            <div class="bg-blue-100 p-3 flex justify-between font-bold text-blue-800">
+                <span>TỔNG NGÂN SÁCH ĐƯỢC CẤP</span>
+                <span>+ 100.000.000</span>
             </div>
 
             <div class="bg-red-100 p-3 flex justify-between font-bold text-red-800 border-t-2 border-gray-100">
-                <span>DÒNG TIỀN RA</span>
-                <span>- 110.000.000</span>
+                <span>TỔNG ĐÃ CHI THỰC TẾ</span>
+                <span>- 88.000.000</span>
             </div>
             <div class="p-3 border-b flex justify-between text-gray-600">
-                <span>- Thanh toán xe 45 chỗ</span>
-                <span>15.000.000</span>
+                <span>- Chi phí Lưu trú (45%)</span>
+                <span>39.600.000</span>
             </div>
             <div class="p-3 border-b flex justify-between text-gray-600">
-                <span>- Thanh toán khách sạn</span>
-                <span>45.000.000</span>
+                <span>- Chi phí Vận chuyển (35%)</span>
+                <span>30.800.000</span>
             </div>
             <div class="p-3 flex justify-between text-gray-600">
-                <span>- Ứng tiền HDV</span>
-                <span>50.000.000</span>
+                <span>- Ăn uống & Vé (20%)</span>
+                <span>17.600.000</span>
             </div>
 
-            <div class="bg-gray-800 p-3 flex justify-between font-bold text-white mt-2 text-base">
-                <span>LƯU CHUYỂN TIỀN THUẦN</span>
-                <span class="text-emerald-400">+ 40.000.000</span>
+            <div class="bg-emerald-500 p-3 flex justify-between font-bold text-white mt-2 text-base">
+                <span>SỐ DƯ QUỸ HIỆN TẠI</span>
+                <span>+ 12.000.000</span>
+            </div>
+            <div class="p-3 text-center text-xs text-gray-400">
+                (Bấm vào biểu đồ bên tab Tổng quan để xem chi tiết từng nhà cung cấp)
             </div>
         </div>
 
@@ -206,12 +177,15 @@
         <div id="report-details" class="hidden bg-white rounded-xl shadow-sm overflow-hidden text-sm p-3 border-2 border-dashed border-gray-300">
             <div class="flex justify-between items-center border-b pb-2 mb-3">
                 <h3 class="font-bold text-blue-700 text-base" id="detail-title">Chi tiết Khoản mục</h3>
-                <button onclick="closeDetails()" class="text-gray-400 hover:text-red-500 bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center"><i class="fas fa-times"></i></button>
             </div>
             <div id="detail-content" class="space-y-3">
                 <!-- Data will be injected here via JS -->
             </div>
-            <button onclick="closeDetails()" class="w-full mt-3 bg-gray-100 text-gray-600 py-2 rounded-lg font-bold text-xs hover:bg-gray-200">Quay lại Báo cáo tổng</button>
+            
+            <!-- Nút quay lại trang Tour -->
+            <button onclick="backToTourDashboard()" class="w-full mt-4 bg-emerald-500 text-white py-3 rounded-xl font-bold shadow hover:bg-emerald-600 transition flex items-center justify-center">
+                <i class="fas fa-arrow-left mr-2"></i> Quay lại trang Tour
+            </button>
         </div>
     </div>
 
