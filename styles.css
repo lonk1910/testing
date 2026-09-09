@@ -1,3 +1,4 @@
+
 .app-container { 
     width: 100%; 
     max-width: 400px; 
@@ -11,16 +12,21 @@
     overflow: hidden; 
     display: flex; 
     flex-direction: column; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
+
+
 .screen { 
     display: none; 
     flex: 1; 
     overflow-y: auto; 
     padding-bottom: 70px; 
 }
+
 .screen.active { 
     display: block; 
 }
+
 .bottom-nav { 
     position: absolute; 
     bottom: 0; 
@@ -31,8 +37,9 @@
     justify-content: space-around; 
     padding: 12px 0; 
     border-radius: 0 0 24px 24px; 
-    z-index: 50; 
+    z-index: 40; 
 }
+
 .nav-item { 
     display: flex; 
     flex-direction: column; 
@@ -40,17 +47,24 @@
     color: #9ca3af; 
     cursor: pointer; 
     font-size: 0.75rem; 
-    /* Đã sửa thành 33.33% để chia đều 3 nút trên bottom nav */
     width: 33.33%; 
+    transition: color 0.2s;
 }
+
 .nav-item.active { 
     color: #10b981; 
     font-weight: bold; 
 }
+
+.nav-item:hover {
+    color: #34d399;
+}
+
 .nav-item i { 
     font-size: 1.25rem; 
     margin-bottom: 4px; 
 }
+
 .scanner-line { 
     width: 100%; 
     height: 2px; 
@@ -59,31 +73,83 @@
     box-shadow: 0 0 10px #10b981; 
     animation: scan 2s infinite linear; 
 }
+
 @keyframes scan { 
-    0% { top: 10%; } 
-    100% { top: 90%; } 
+    0% { 
+        top: 10%; 
+    } 
+
+    100% { 
+        top: 90%; 
+    } 
 }
 
-/* Night Mode (Dark Theme) */
-.app-container {
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
+
+/* =========================================================
+   Night Mode (Dark Theme)
+   ========================================================= */
+
 .dark-theme.app-container { 
     background: #111827; 
     border-color: #000000; 
 }
+
+.dark-theme canvas {
+    /* Đảm bảo canvas không bị mờ và hiển thị sắc nét */
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+
+/* Cards */
 .dark-theme .bg-white { 
     background-color: #1f2937 !important; 
     border-color: #374151 !important; 
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 }
+
+
+/* Text */
 .dark-theme .text-gray-800, 
 .dark-theme .text-gray-700 { 
     color: #f9fafb !important; 
 }
-.dark-theme .text-gray-500 { 
-    color: #9ca3af !important; 
+
+.dark-theme .text-gray-500,
+.dark-theme .text-gray-400 { 
+    color: #d1d5db !important; 
 }
+
+
+/* Light background sections */
+.dark-theme .bg-blue-50,
+.dark-theme .bg-emerald-50,
+.dark-theme .bg-amber-50 {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+}
+
+
+/* Detail title */
+.dark-theme #detail-title {
+    color: #60a5fa !important;
+}
+
+
+/* Gray background */
+.dark-theme .bg-gray-100 {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+
+/* Borders */
+.dark-theme .border-gray-300, 
+.dark-theme .border-gray-100 { 
+    border-color: #4b5563 !important; 
+}
+
+
+/* Bottom navigation */
 .dark-theme .bottom-nav { 
     background: #1f2937; 
     border-top-color: #374151; 

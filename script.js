@@ -1,4 +1,4 @@
-// Dữ liệu Động cho tất cả các Tour khớp tuyệt đối với kế toán
+// Dữ liệu Tour được nâng cấp với Danh sách Bill chi tiết cho từng hạng mục
 const toursData = {
     'dn-ha': {
         name: 'Đà Nẵng - Hội An 3N2Đ',
@@ -7,77 +7,100 @@ const toursData = {
         chartLabels: ['Lưu trú (45%)', 'Vận chuyển (35%)', 'Ăn uống & Vé (20%)'],
         chartData: [45, 35, 20],
         details: {
-            0: { // 45% của 88tr = 39.600.000
-                title: "Chi tiết dòng tiền: LƯU TRÚ (45%)", color: "text-blue-600",
-                html: `
-                    <div class="p-3 border rounded-lg bg-blue-50 mb-2 shadow-sm">
-                        <div class="flex justify-between items-start"><p class="font-bold text-gray-800">Khách sạn Mường Thanh ĐN</p><span class="bg-blue-200 text-blue-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span></div>
-                        <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0400123456</p>
-                        <p class="text-sm mt-1 text-gray-700">Hạng mục: 20 phòng x 3 đêm x 660k</p>
-                        <p class="font-bold text-red-500 mt-2 text-right">39.600.000 VNĐ</p>
-                    </div><div class="text-right text-xs font-bold text-gray-600 mt-2">Tổng: 39.600.000 VNĐ</div>`
+            0: { 
+                title: "LƯU TRÚ (45%)", 
+                totalAmount: "39.600.000 VNĐ",
+                bills: [
+                    { supplier: "Khách sạn Mường Thanh Lux", date: "08/09/2026", code: "HD-26-00102", amount: "25.000.000 VNĐ" },
+                    { supplier: "Boutique Resort Hội An", date: "09/09/2026", code: "HD-26-00115", amount: "14.600.000 VNĐ" }
+                ]
             },
-            1: { // 35% của 88tr = 30.800.000
-                title: "Chi tiết dòng tiền: VẬN CHUYỂN (35%)", color: "text-emerald-600",
-                html: `
-                    <div class="p-3 border rounded-lg bg-emerald-50 mb-2 shadow-sm">
-                        <div class="flex justify-between items-start"><p class="font-bold text-gray-800">Nhà xe Hải Vân</p><span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span></div>
-                        <p class="text-sm mt-1 text-gray-700">Thuê xe 45 chỗ x 3 ngày</p>
-                        <p class="font-bold text-red-500 mt-2 text-right">10.800.000 VNĐ</p>
-                    </div>
-                    <div class="p-3 border rounded-lg bg-emerald-50 shadow-sm">
-                        <div class="flex justify-between items-start"><p class="font-bold text-gray-800">Vietjet Air (Đại lý)</p><span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span></div>
-                        <p class="text-sm mt-1 text-gray-700">Vé bay khứ hồi (20 khách)</p>
-                        <p class="font-bold text-red-500 mt-2 text-right">20.000.000 VNĐ</p>
-                    </div><div class="text-right text-xs font-bold text-gray-600 mt-2">Tổng: 30.800.000 VNĐ</div>`
+            1: { 
+                title: "VẬN CHUYỂN (35%)", 
+                totalAmount: "30.800.000 VNĐ",
+                bills: [
+                    { supplier: "Vé máy bay Vietjet Air (20 khách)", date: "05/09/2026", code: "VJ-98402", amount: "22.000.000 VNĐ" },
+                    { supplier: "Thuê xe 29 chỗ Hải Vân Travel", date: "08/09/2026", code: "HD-26-00088", amount: "8.800.000 VNĐ" }
+                ]
             },
-            2: { // 20% của 88tr = 17.600.000
-                title: "Chi tiết dòng tiền: ĂN UỐNG & VÉ (20%)", color: "text-amber-600",
-                html: `
-                    <div class="p-3 border rounded-lg bg-amber-50 mb-2 shadow-sm">
-                        <div class="flex justify-between items-start"><p class="font-bold text-gray-800">Nhà hàng Biển Đông</p><span class="bg-yellow-200 text-yellow-800 text-[10px] px-2 py-1 rounded font-bold">Chờ duyệt</span></div>
-                        <p class="text-sm mt-1 text-gray-700">20 suất Hải sản x 410k</p>
-                        <p class="font-bold text-red-500 mt-2 text-right">8.200.000 VNĐ</p>
-                    </div>
-                    <div class="p-3 border rounded-lg bg-amber-50 shadow-sm">
-                        <div class="flex justify-between items-start"><p class="font-bold text-gray-800">Bà Nà Hills</p><span class="bg-yellow-200 text-yellow-800 text-[10px] px-2 py-1 rounded font-bold">Chờ duyệt</span></div>
-                        <p class="text-sm mt-1 text-gray-700">20 vé cáp treo khứ hồi x 470k</p>
-                        <p class="font-bold text-red-500 mt-2 text-right">9.400.000 VNĐ</p>
-                    </div><div class="text-right text-xs font-bold text-gray-600 mt-2">Tổng: 17.600.000 VNĐ</div>`
+            2: { 
+                title: "ĂN UỐNG & VÉ (20%)", 
+                totalAmount: "17.600.000 VNĐ",
+                bills: [
+                    // Thêm invoiceId để chuyển sang trang chi tiết khi bấm vào
+                    { supplier: "Nhà hàng Biển Đông (Tiệc tối)", date: "08/09/2026", code: "HD-26-00142", amount: "8.200.000 VNĐ", invoiceId: "req-bien-dong" },
+                    { supplier: "Sun World Ba Na Hills (Vé cáp)", date: "09/09/2026", code: "HD-26-00889", amount: "9.400.000 VNĐ", invoiceId: "req-bana" }
+                ]
             }
         }
     },
-    'bana': {
-        name: 'Bà Nà Hills 1 Ngày', budget: 25000000, spent: 2500000,
-        chartLabels: ['Đặt cọc vé (100%)'], chartData: [100],
-        details: {
-            0: { title: "Chi tiết dòng tiền: ĐẶT CỌC VÉ (100%)", color: "text-blue-600", html: `<div class="p-3 border rounded-lg bg-blue-50 shadow-sm"><div class="flex justify-between items-start"><p class="font-bold text-gray-800">Sun World Ba Na Hills</p><span class="bg-blue-200 text-blue-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span></div><p class="font-bold text-red-500 mt-2 text-right">2.500.000 VNĐ</p></div>` }
-        }
-    },
-    'phuquoc': {
-        name: 'Phú Quốc 4N3Đ', budget: 200000000, spent: 150000000,
-        chartLabels: ['Lưu trú (50%)', 'Vé máy bay (30%)', 'Ăn uống (20%)'], chartData: [50, 30, 20],
-        details: {
-            0: { title: "Chi tiết dòng tiền: LƯU TRÚ (50%)", color: "text-blue-600", html: `<div class="p-3 border rounded-lg bg-blue-50 shadow-sm"><div class="flex justify-between"><p class="font-bold text-gray-800">Vinpearl Resort</p><span class="bg-blue-200 text-blue-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span></div><p class="font-bold text-red-500 mt-2 text-right">75.000.000 VNĐ</p></div>` },
-            1: { title: "Chi tiết dòng tiền: VÉ MÁY BAY (30%)", color: "text-emerald-600", html: `<div class="p-3 border rounded-lg bg-emerald-50 shadow-sm"><div class="flex justify-between"><p class="font-bold text-gray-800">Vietnam Airlines</p><span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span></div><p class="font-bold text-red-500 mt-2 text-right">45.000.000 VNĐ</p></div>` },
-            2: { title: "Chi tiết dòng tiền: ĂN UỐNG (20%)", color: "text-amber-600", html: `<div class="p-3 border rounded-lg bg-amber-50 shadow-sm"><div class="flex justify-between"><p class="font-bold text-gray-800">Nhà hàng Hàm Ninh</p><span class="bg-yellow-200 text-yellow-800 text-[10px] px-2 py-1 rounded font-bold">Chờ duyệt</span></div><p class="font-bold text-red-500 mt-2 text-right">30.000.000 VNĐ</p></div>` }
-        }
-    },
-    'hue': {
-        name: 'Huế - Lăng Cô 2N1Đ', budget: 40000000, spent: 40000000,
-        chartLabels: ['Lưu trú (40%)', 'Di chuyển (40%)', 'Khác (20%)'], chartData: [40, 40, 20],
-        details: {
-            0: { title: "LƯU TRÚ (40%)", color: "text-blue-600", html: `<div class="p-3 border rounded-lg bg-blue-50"><p class="font-bold text-gray-800">Resort Lăng Cô</p><p class="font-bold text-red-500 mt-2 text-right">16.000.000 VNĐ</p></div>` },
-            1: { title: "DI CHUYỂN (40%)", color: "text-emerald-600", html: `<div class="p-3 border rounded-lg bg-emerald-50"><p class="font-bold text-gray-800">Nhà xe Huế Tour</p><p class="font-bold text-red-500 mt-2 text-right">16.000.000 VNĐ</p></div>` },
-            2: { title: "KHÁC (20%)", color: "text-amber-600", html: `<div class="p-3 border rounded-lg bg-amber-50"><p class="font-bold text-gray-800">Vé tham quan Đại Nội & HDV</p><p class="font-bold text-red-500 mt-2 text-right">8.000.000 VNĐ</p></div>` }
-        }
-    }
+
 };
 
+
+// Hàm hiển thị danh sách hóa đơn chi tiết khi bấm vào biểu đồ
+// Hàm hiển thị danh sách hóa đơn chi tiết khi bấm vào biểu đồ
+function showReportDetail(index) {
+    const tour = toursData[currentTourId];
+    const categoryData = tour.details[index];
+
+    if (!categoryData) return;
+
+    // Cập nhật tiêu đề hạng mục
+    document.getElementById('detail-title').innerText = categoryData.title;
+
+    // Render danh sách các hóa đơn
+    let billsHtml = `
+        <div class="mb-3 p-2 bg-blue-50 dark:bg-gray-800 rounded-lg flex justify-between items-center border border-blue-100 dark:border-gray-700">
+            <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">Tổng chi hạng mục:</span>
+            <span class="font-bold text-red-500 dark:text-red-400 text-base">${categoryData.totalAmount}</span>
+        </div>
+        <p class="text-xs font-bold text-gray-600 dark:text-gray-300 mb-2">
+            <i class="fas fa-file-invoice mr-1"></i> Danh sách hóa đơn chứng từ (${categoryData.bills.length}):
+        </p>
+        <p class="text-[10px] text-emerald-600 dark:text-emerald-400 italic mb-2">
+            * Bấm vào từng bill bên dưới để xem chi tiết chứng từ & phê duyệt
+        </p>
+        <div class="space-y-2.5">
+    `;
+
+    categoryData.bills.forEach((bill) => {
+        // Gắn sự kiện openInvoiceDetail nếu bill có mã ID chờ duyệt tương ứng
+        const clickAction = bill.invoiceId ? `onclick="openInvoiceDetail('${bill.invoiceId}')"` : '';
+        const cursorStyle = bill.invoiceId ? 'cursor-pointer hover:border-emerald-500 hover:shadow-md' : '';
+
+        billsHtml += `
+            <div ${clickAction} class="p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm transition ${cursorStyle}">
+                <div class="flex justify-between items-start mb-1">
+                    <p class="font-bold text-gray-800 dark:text-gray-100 text-sm flex items-center">
+                        ${bill.supplier}
+                        ${bill.invoiceId ? '<i class="fas fa-chevron-right text-[10px] ml-1.5 text-emerald-500"></i>' : ''}
+                    </p>
+                    <span class="font-bold text-red-500 dark:text-red-400 text-sm">${bill.amount}</span>
+                </div>
+                <div class="flex justify-between text-[11px] text-gray-500 dark:text-gray-400">
+                    <span><i class="far fa-calendar-alt mr-1"></i>${bill.date}</span>
+                    <span class="font-mono bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded">${bill.code}</span>
+                </div>
+            </div>
+        `;
+    });
+
+    billsHtml += `</div>`;
+
+    document.getElementById('detail-content').innerHTML = billsHtml;
+    
+    // Chuyển sang Tab chi tiết báo cáo
+    switchTab('report', document.getElementById('nav-report'));
+    document.getElementById('report-empty').classList.add('hidden');
+    document.getElementById('report-details').classList.remove('hidden');
+}
 let currentTourId = '';
 let expenseChartInstance = null;
 
-// Hàm chuyển tab chung
+
+
+// Hàm chuyển tab
 function switchTab(tabId, element) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + tabId).classList.add('active');
@@ -88,144 +111,194 @@ function switchTab(tabId, element) {
     }
 }
 
-// Mở một Tour cụ thể và tính toán số liệu
+// Logic Dashboard Tour
 function openTour(tourId) {
     currentTourId = tourId;
     const tour = toursData[tourId];
     
-    // Đổ dữ liệu vào UI
     document.getElementById('tour-name-title').innerText = tour.name;
     document.getElementById('tour-budget').innerText = tour.budget.toLocaleString('vi-VN');
     document.getElementById('tour-spent').innerText = tour.spent.toLocaleString('vi-VN');
     document.getElementById('tour-remaining').innerText = (tour.budget - tour.spent).toLocaleString('vi-VN');
     
-    // Cảnh báo nếu chi tiêu quá 80%
-    const warningEl = document.getElementById('tour-warning');
-    let percent = (tour.spent / tour.budget) * 100;
-    if(percent >= 80) {
-        warningEl.classList.remove('hidden');
-        warningEl.innerHTML = `<i class="fas fa-exclamation-triangle mr-1"></i> CẢNH BÁO: Đã chi ${percent.toFixed(0)}% ngân sách!`;
-    } else {
-        warningEl.classList.add('hidden');
-    }
-    
-    // Render Biểu đồ
-    updateChart(tour.chartLabels, tour.chartData);
-    
-    // Chuyển sang màn hình Dashboard Tour
     switchTab('home');
-}
 
-// Hàm vẽ biểu đồ tròn
+    setTimeout(() => {
+        updateChart(tour.chartLabels, tour.chartData);
+    }, 50);
+}
 function updateChart(labels, data) {
-    const canvas = document.getElementById('expenseChart');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    if (expenseChartInstance) expenseChartInstance.destroy();
     
-    // Xóa biểu đồ cũ nếu có
-    if(expenseChartInstance) { expenseChartInstance.destroy(); }
-    
+    const isDark = document.querySelector('.app-container').classList.contains('dark-theme');
+    const pieColors = ['#3b82f6', '#10b981', '#f59e0b'];
+
     expenseChartInstance = new Chart(ctx, {
         type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{ data: data, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'], borderWidth: 2, hoverOffset: 10 }]
+        data: { 
+            labels: labels, 
+            datasets: [{ 
+                data: data, 
+                backgroundColor: pieColors,
+                hoverBackgroundColor: pieColors,
+                
+                borderColor: isDark ? '#1f2937' : '#ffffff',
+                borderWidth: 3,
+                
+                hoverBorderColor: isDark ? '#1f2937' : '#ffffff',
+                hoverBorderWidth: 3,
+                
+                hoverOffset: 8
+            }] 
         },
-        options: {
+        options: { 
             responsive: true,
-            plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } },
-            onClick: (event, elements) => {
-                if (elements.length > 0) { showReportDetail(elements[0].index); }
-            }
+            maintainAspectRatio: false,
+            
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 900,
+                easing: 'easeOutBack'
+            },
+            
+            plugins: { 
+                legend: { 
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 12,
+                        padding: 15,
+                        color: isDark ? '#f9fafb' : '#374151',
+                        font: { weight: '500', size: 12 }
+                    }
+                },
+                tooltip: {
+                    animation: { duration: 150 }
+                }
+            }, 
+            onClick: (e, elements) => { 
+                if (elements.length > 0) showReportDetail(elements[0].index); 
+            } 
         }
     });
 }
 
-// Bấm vào biểu đồ xem chi tiết dòng tiền
-function showReportDetail(index) {
-    if(!currentTourId) return;
-    const tour = toursData[currentTourId];
-    if(!tour.details || !tour.details[index]) return;
-
-    const data = tour.details[index];
-    const titleEl = document.getElementById('detail-title');
-    titleEl.innerText = data.title;
-    titleEl.className = "font-bold text-base " + data.color;
-    document.getElementById('detail-content').innerHTML = data.html;
-    
-    switchTab('report', document.getElementById('nav-report'));
-    document.getElementById('report-empty').classList.add('hidden');
-    document.getElementById('report-details').classList.remove('hidden');
-}
-
-function backToTourList() { 
-    switchTab('tour-list', document.getElementById('nav-tour-list')); 
-}
-
-function backToTourDashboard() { 
-    switchTab('home'); 
-}
-
-// --- LOGIC MỚI CHO SCAN BILL ---
-
-// Mở màn hình scan từ trong chi tiết Tour
-function openScanBill() {
-    switchTab('scan'); 
-    
-    // Reset lại giao diện quét
-    document.getElementById('scan-result').classList.add('hidden');
-    document.getElementById('scan-line').classList.add('hidden');
-    document.getElementById('scan-hint').innerHTML = '<i class="fas fa-receipt text-4xl mb-2"></i><br>Đưa hóa đơn vào khung hình';
-    
-    // Bỏ trạng thái active của các nút ở dưới để báo hiệu người dùng đang trong luồng tác vụ quét bill
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-}
-
-// Trở lại trang Dashboard Tour sau khi scan xong hoặc khi ấn nút quay lại
-function backToTourFromScan() {
-    switchTab('home'); 
-}
-
-// Xử lý hiệu ứng quét
-function simulateScan() {
-    const line = document.getElementById('scan-line');
-    const result = document.getElementById('scan-result');
-    const hint = document.getElementById('scan-hint');
-    
-    line.classList.remove('hidden');
-    result.classList.add('hidden');
-    hint.innerHTML = '<i class="fas fa-spinner fa-spin text-4xl mb-2"></i><br>Đang bóc tách dữ liệu OCR...';
-    
-    setTimeout(() => {
-        line.classList.add('hidden');
-        hint.innerHTML = '<i class="fas fa-check-circle text-4xl mb-2 text-emerald-500"></i><br>Quét thành công!';
-        result.classList.remove('hidden');
-    }, 2000);
-}
-
-// Xử lý Duyệt chi
-function approve(id, isApproved) {
-    const el = document.getElementById(id);
-    if(isApproved) {
-        el.innerHTML = '<div class="text-center py-4 text-emerald-600 font-bold"><i class="fas fa-check-circle text-3xl mb-2"></i><br>Đã phê duyệt thanh toán</div>';
-    } else {
-        el.innerHTML = '<div class="text-center py-4 text-red-500 font-bold"><i class="fas fa-times-circle text-3xl mb-2"></i><br>Đã từ chối khoản chi</div>';
-    }
-    setTimeout(() => { el.style.display = 'none'; }, 2000);
-}
-
-// Bật/tắt Night Mode
 function toggleNightMode() {
     const container = document.querySelector('.app-container');
     container.classList.toggle('dark-theme');
     
-    // Đổi icon giữa mặt trăng (tối) và mặt trời (sáng)
+    const isDark = container.classList.contains('dark-theme');
     const icon = document.getElementById('theme-icon');
-    if (container.classList.contains('dark-theme')) {
+    
+    if (isDark) {
         icon.classList.remove('fa-moon');
         icon.classList.add('fa-sun');
     } else {
         icon.classList.remove('fa-sun');
         icon.classList.add('fa-moon');
     }
+
+    if (expenseChartInstance) {
+        const dataset = expenseChartInstance.data.datasets[0];
+        const targetBorderColor = isDark ? '#1f2937' : '#ffffff';
+        
+        expenseChartInstance.options.plugins.legend.labels.color = isDark ? '#f9fafb' : '#374151';
+        dataset.borderColor = targetBorderColor;
+        dataset.hoverBorderColor = targetBorderColor;
+        
+        expenseChartInstance.update('none'); 
+    }
+}
+
+function backToTourList() { switchTab('tour-list', document.getElementById('nav-tour-list')); }
+function backToTourDashboard() { switchTab('home'); }
+
+// Logic Quét Bill
+function openScanBill() {
+    switchTab('scan'); 
+    document.getElementById('scan-result').classList.add('hidden');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+}
+
+function backToTourFromScan() { switchTab('home'); }
+
+function simulateScan() {
+    document.getElementById('scan-line').classList.remove('hidden');
+    document.getElementById('scan-hint').innerHTML = '<i class="fas fa-spinner fa-spin text-4xl mb-2"></i><br>Đang xử lý...';
+    setTimeout(() => {
+        document.getElementById('scan-line').classList.add('hidden');
+        document.getElementById('scan-result').classList.remove('hidden');
+    }, 1500);
+}
+
+// Logic Duyệt chi cơ bản
+function approve(id, isApproved) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = isApproved 
+        ? '<div class="text-center py-4 text-emerald-600 font-bold"><i class="fas fa-check-circle text-3xl mb-2"></i><br>Đã phê duyệt</div>'
+        : '<div class="text-center py-4 text-red-500 font-bold"><i class="fas fa-times-circle text-3xl mb-2"></i><br>Đã từ chối</div>';
+    setTimeout(() => { el.style.display = 'none'; }, 1500);
+}
+
+// --- LOGIC TRANG CHI TIẾT HÓA ĐƠN ---
+// --- LOGIC TRANG CHI TIẾT HÓA ĐƠN ---
+const pendingInvoicesData = {
+    'req-bien-dong': { 
+        supplier: 'Nhà hàng Biển Đông', 
+        taxId: '0401234567', 
+        invoiceNo: 'HD-26-00142',
+        invoiceDate: '08/09/2026',
+        category: ' Ăn uống ',
+        entry: 'Nợ 154 / Có 331', 
+        itemDescription: '20 suất x 410.000đ', 
+        paymentMethod: 'Ủy nhiệm chi (UNC)',
+        total: '8.200.000 VNĐ' 
+    },
+    'req-bana': { 
+        supplier: 'Sun World Ba Na Hills', 
+        taxId: '0409876543', 
+        invoiceNo: 'HD-26-00889',
+        invoiceDate: '09/09/2026',
+        category: ' Vé tham quan ',
+        entry: 'Nợ 154 / Có 331', 
+        itemDescription: '20 vé cáp treo khứ hồi',
+        paymentMethod: 'Ủy nhiệm chi (UNC)', 
+        total: '9.400.000 VNĐ' 
+    }
+};
+
+let currentPageInvoiceId = null;
+
+function openInvoiceDetail(invoiceId) {
+    const data = pendingInvoicesData[invoiceId];
+    if (!data) return;
+
+    currentPageInvoiceId = invoiceId;
+    
+    // Đổ dữ liệu chi tiết vào các trường mới
+    document.getElementById('page-supplier').innerText = data.supplier;
+    document.getElementById('page-tax').innerText = data.taxId;
+    document.getElementById('page-invoiceNo').innerText = data.invoiceNo;
+    document.getElementById('page-invoiceDate').innerText = data.invoiceDate;
+    document.getElementById('page-category').innerText = data.category;
+    document.getElementById('page-entry').innerText = data.entry;
+    document.getElementById('page-desc').innerText = data.itemDescription;
+    document.getElementById('page-payment').innerText = data.paymentMethod;
+    document.getElementById('page-total').innerText = data.total;
+
+    document.getElementById('page-btn-approve').onclick = () => approveFromPage(invoiceId, true);
+    document.getElementById('page-btn-reject').onclick = () => approveFromPage(invoiceId, false);
+
+    switchTab('invoice-detail');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+}
+function backToApproveList() {
+    switchTab('approve', document.getElementById('nav-approve'));
+}
+
+function approveFromPage(invoiceId, isApproved) {
+    approve(invoiceId, isApproved);
+    setTimeout(() => { backToApproveList(); }, 150);
 }
