@@ -265,23 +265,19 @@ function openScanBill() {
 function backToTourFromScan() { switchTab('home'); }
 
 function simulateScan() {
-    document.getElementById('scan-line').classList.remove('hidden');
-    document.getElementById('scan-hint').innerHTML = '<i class="fas fa-spinner fa-spin text-4xl mb-2"></i><br>Đang xử lý...';
+    const line = document.getElementById('scan-line');
+    const result = document.getElementById('scan-result');
+    const hint = document.getElementById('scan-hint');
+    
+    line.classList.remove('hidden');
+    result.classList.add('hidden');
+    hint.innerHTML = '<i class="fas fa-spinner fa-spin text-4xl mb-2"></i><br>Đang bóc tách dữ liệu OCR...';
     
     setTimeout(() => {
-        document.getElementById('scan-line').classList.add('hidden');
-        document.getElementById('scan-result').classList.remove('hidden');
-
-        // Hiển thị thông báo quét thành công
-        const alertBox = document.getElementById('scan-success-alert');
-        if (alertBox) {
-            alertBox.classList.remove('hidden');
-            // Tự động ẩn sau 3 giây (nếu muốn)
-            setTimeout(() => {
-                alertBox.classList.add('hidden');
-            }, 3000);
-        }
-    }, 1500);
+        line.classList.add('hidden');
+        hint.innerHTML = '<i class="fas fa-check-circle text-4xl mb-2 text-emerald-500"></i><br>Quét thành công!';
+        result.classList.remove('hidden');
+    }, 2000);
 }
 
 // Logic Duyệt chi cơ bản
