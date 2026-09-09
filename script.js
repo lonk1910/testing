@@ -12,11 +12,7 @@ function switchTab(tabId, element) {
 // Từ Danh sách Tour đi vào Chi tiết 1 Tour (Dashboard)
 function openTour(tourName) {
     document.getElementById('tour-name-title').innerText = tourName;
-    switchTab('home'); // Không highlight nav-item nào để người dùng biết đang ở trang con
-    
-    // Đảm bảo tab báo cáo quay lại trạng thái overview nếu người dùng tự bấm vào báo cáo sau này
-    document.getElementById('report-details').classList.add('hidden');
-    document.getElementById('report-overview').classList.remove('hidden');
+    switchTab('home'); 
 }
 
 // Từ Dashboard quay lại Danh sách Tour
@@ -25,10 +21,6 @@ function backToTourList() {
 }
 
 // Dữ liệu hợp lý hóa: Tổng chi 88tr (100%)
-// Lưu trú (45%) = 39.600.000 VNĐ
-// Vận chuyển (35%) = 30.800.000 VNĐ
-// Ăn uống & Vé (20%) = 17.600.000 VNĐ
-
 const detailData = {
     0: { // Lưu trú
         title: "Chi tiết dòng tiền: LƯU TRÚ (45%)",
@@ -107,18 +99,14 @@ function showReportDetail(index) {
     titleEl.className = "font-bold text-base " + data.color;
     document.getElementById('detail-content').innerHTML = data.html;
     
-    // Chuyển UI sang màn hình báo cáo, ẩn overview đi
-    switchTab('report');
-    document.getElementById('report-overview').classList.add('hidden');
+    // Chuyển UI sang màn hình báo cáo, ẩn state empty
+    switchTab('report', document.getElementById('nav-report'));
+    document.getElementById('report-empty').classList.add('hidden');
     document.getElementById('report-details').classList.remove('hidden');
 }
 
 // Bấm nút Quay lại ở trang Chi tiết Đối tác
 function backToTourDashboard() {
-    // Ẩn chi tiết, hiện lại overview báo cáo
-    document.getElementById('report-details').classList.add('hidden');
-    document.getElementById('report-overview').classList.remove('hidden');
-    
     // Quay thẳng về lại màn hình Dashboard của Tour (Tab home)
     switchTab('home');
 }

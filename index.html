@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danang Green Travel MVP - V3</title>
+    <title>Danang Green Travel MVP - V4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -133,44 +133,15 @@
         </div>
     </div>
 
-    <!-- Màn hình 4: Báo cáo -->
+    <!-- Màn hình 4: Báo cáo Chi Tiết (Đã xóa Báo cáo tổng) -->
     <div id="screen-report" class="screen p-4">
-        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-file-invoice-dollar mr-2"></i>Báo cáo Dòng tiền Tour</h2>
+        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-file-invoice-dollar mr-2"></i>Chi tiết Dòng tiền</h2>
         
-        <!-- Tổng quan báo cáo của riêng 1 Tour -->
-        <div id="report-overview" class="bg-white rounded-xl shadow-sm overflow-hidden text-sm">
-            <div class="p-3 bg-gray-100 border-b font-bold text-gray-800 text-center">
-                ĐÀ NẴNG - HỘI AN 3N2Đ
-            </div>
-            <div class="bg-blue-100 p-3 flex justify-between font-bold text-blue-800">
-                <span>TỔNG NGÂN SÁCH ĐƯỢC CẤP</span>
-                <span>+ 100.000.000</span>
-            </div>
-
-            <div class="bg-red-100 p-3 flex justify-between font-bold text-red-800 border-t-2 border-gray-100">
-                <span>TỔNG ĐÃ CHI THỰC TẾ</span>
-                <span>- 88.000.000</span>
-            </div>
-            <div class="p-3 border-b flex justify-between text-gray-600">
-                <span>- Chi phí Lưu trú (45%)</span>
-                <span>39.600.000</span>
-            </div>
-            <div class="p-3 border-b flex justify-between text-gray-600">
-                <span>- Chi phí Vận chuyển (35%)</span>
-                <span>30.800.000</span>
-            </div>
-            <div class="p-3 flex justify-between text-gray-600">
-                <span>- Ăn uống & Vé (20%)</span>
-                <span>17.600.000</span>
-            </div>
-
-            <div class="bg-emerald-500 p-3 flex justify-between font-bold text-white mt-2 text-base">
-                <span>SỐ DƯ QUỸ HIỆN TẠI</span>
-                <span>+ 12.000.000</span>
-            </div>
-            <div class="p-3 text-center text-xs text-gray-400">
-                (Bấm vào biểu đồ bên tab Tổng quan để xem chi tiết từng nhà cung cấp)
-            </div>
+        <!-- Màn hình chờ khi chưa chọn khoản mục nào từ biểu đồ -->
+        <div id="report-empty" class="bg-white rounded-xl shadow-sm p-6 text-center text-gray-500">
+            <i class="fas fa-chart-pie text-4xl mb-3 text-gray-300"></i>
+            <p>Vui lòng chọn một khoản mục từ biểu đồ Tổng quan để xem chi tiết dòng tiền.</p>
+            <button onclick="switchTab('home')" class="mt-4 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-lg font-bold text-sm">Quay lại biểu đồ</button>
         </div>
 
         <!-- Khung hiển thị chi tiết Đối tác (Drill-down từ Chart) -->
@@ -182,9 +153,9 @@
                 <!-- Data will be injected here via JS -->
             </div>
             
-            <!-- Nút quay lại trang Tour -->
+            <!-- Nút quay lại trang trước -->
             <button onclick="backToTourDashboard()" class="w-full mt-4 bg-emerald-500 text-white py-3 rounded-xl font-bold shadow hover:bg-emerald-600 transition flex items-center justify-center">
-                <i class="fas fa-arrow-left mr-2"></i> Quay lại trang Tour
+                <i class="fas fa-arrow-left mr-2"></i> Quay lại trang trước
             </button>
         </div>
     </div>
@@ -201,7 +172,7 @@
             <i class="fas fa-clipboard-check"></i><span>Duyệt chi</span>
         </div>
         <div id="nav-report" class="nav-item" onclick="switchTab('report', this)">
-            <i class="fas fa-chart-line"></i><span>Báo cáo</span>
+            <i class="fas fa-chart-line"></i><span>Chi tiết</span>
         </div>
     </div>
 </div>
