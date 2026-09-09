@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danang Green Travel MVP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Header -->
+    <div class="bg-emerald-500 text-white p-4 text-center font-bold text-lg rounded-t-3xl shadow-md z-10">
+        Danang Green Travel
+    </div>
+
+    <!-- Màn hình 1: Dashboard -->
+    <div id="screen-home" class="screen active p-4">
+        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-chart-pie mr-2"></i>Tổng quan dòng tiền Tour</h2>
+        
+        <!-- Cảnh báo vượt ngân sách -->
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded shadow-sm text-sm font-semibold animate-pulse">
+            <i class="fas fa-exclamation-triangle mr-1"></i> CẢNH BÁO: Đã chi 88% ngân sách dự kiến!
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+            <canvas id="expenseChart" width="200" height="200"></canvas>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="bg-white p-3 rounded-xl shadow-sm text-center border-t-4 border-blue-400">
+                <p class="text-gray-500 text-xs">Ngân sách (VNĐ)</p>
+                <p class="font-bold text-gray-800 text-lg">100.000.000</p>
+            </div>
+            <div class="bg-white p-3 rounded-xl shadow-sm text-center border-t-4 border-red-400">
+                <p class="text-gray-500 text-xs">Đã chi (VNĐ)</p>
+                <p class="font-bold text-red-600 text-lg">88.000.000</p>
+            </div>
+            <div class="bg-white p-3 rounded-xl shadow-sm text-center border-t-4 border-emerald-400 col-span-2">
+                <p class="text-gray-500 text-xs">Số dư khả dụng (VNĐ)</p>
+                <p class="font-bold text-emerald-600 text-xl">12.000.000</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Màn hình 2: Smart Scanner -->
+    <div id="screen-scan" class="screen p-4">
+        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-camera mr-2"></i>Quét chứng từ tự động</h2>
+        
+        <div id="camera-view" class="w-full h-64 bg-gray-800 rounded-xl relative overflow-hidden flex items-center justify-center mb-4">
+            <div class="text-gray-400 text-center" id="scan-hint">
+                <i class="fas fa-receipt text-4xl mb-2"></i><br>Đưa hóa đơn vào khung hình
+            </div>
+            <div id="scan-line" class="scanner-line hidden"></div>
+        </div>
+
+        <button onclick="simulateScan()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition duration-200 mb-4">
+            <i class="fas fa-crosshairs mr-2"></i>Chụp & Quét OCR
+        </button>
+
+        <div id="scan-result" class="bg-white p-4 rounded-xl shadow-sm hidden">
+            <h3 class="font-bold text-emerald-600 mb-2 border-b pb-1">Kết quả trích xuất</h3>
+            <div class="space-y-2 text-sm">
+                <div><span class="text-gray-500">Nhà cung cấp:</span> <span class="font-semibold text-gray-800">Khách sạn Mường Thanh ĐN</span></div>
+                <div><span class="text-gray-500">Mã số thuế:</span> <span class="font-semibold text-gray-800">0400123456</span></div>
+                <div><span class="text-gray-500">Ngày tháng:</span> <span class="font-semibold text-gray-800">08/09/2026</span></div>
+                <div><span class="text-gray-500">Hạng mục:</span> <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">Lưu trú</span></div>
+                <div><span class="text-gray-500">Tổng tiền:</span> <span class="font-bold text-red-500">15.500.000 VNĐ</span></div>
+            </div>
+            <button class="w-full mt-4 bg-gray-800 text-white font-bold py-2 rounded-lg">Xác nhận đưa vào sổ</button>
+        </div>
+    </div>
+
+    <!-- Màn hình 3: Phê duyệt -->
+    <div id="screen-approve" class="screen p-4">
+        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-check-double mr-2"></i>Chờ phê duyệt (Kế toán)</h2>
+        
+        <!-- Yêu cầu 1 -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-yellow-400 transition-transform duration-300" id="req-1">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <p class="font-bold text-gray-800 text-sm">HDV Nguyễn Văn A</p>
+                    <p class="text-xs text-gray-500">Thanh toán vé cáp treo Bà Nà</p>
+                </div>
+                <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded font-bold">Chờ duyệt</span>
+            </div>
+            <p class="font-bold text-red-500 mb-3">25.000.000 VNĐ</p>
+            <div class="flex justify-between gap-2">
+                <button onclick="approve('req-1', false)" class="flex-1 bg-red-100 text-red-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-times mr-1"></i>Từ chối</button>
+                <button onclick="approve('req-1', true)" class="flex-1 bg-emerald-100 text-emerald-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-check mr-1"></i>Đồng ý duyệt</button>
+            </div>
+        </div>
+
+        <!-- Yêu cầu 2 -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-400" id="req-2">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <p class="font-bold text-gray-800 text-sm">HDV Trần Thị B</p>
+                    <p class="text-xs text-gray-500">Tiền ăn trưa nhà hàng Hải Sản</p>
+                </div>
+                <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded font-bold">Chờ duyệt</span>
+            </div>
+            <p class="font-bold text-red-500 mb-3">8.200.000 VNĐ</p>
+            <div class="flex justify-between gap-2">
+                <button onclick="approve('req-2', false)" class="flex-1 bg-red-100 text-red-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-times mr-1"></i>Từ chối</button>
+                <button onclick="approve('req-2', true)" class="flex-1 bg-emerald-100 text-emerald-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-check mr-1"></i>Đồng ý duyệt</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Màn hình 4: Báo cáo -->
+    <div id="screen-report" class="screen p-4">
+        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-file-invoice-dollar mr-2"></i>Báo cáo Dòng tiền Trực tiếp</h2>
+        
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden text-sm">
+            <div class="bg-emerald-100 p-3 flex justify-between font-bold text-emerald-800">
+                <span>DÒNG TIỀN VÀO</span>
+                <span>+ 150.000.000</span>
+            </div>
+            <div class="p-3 border-b flex justify-between text-gray-600">
+                <span>- Thu tiền cọc Tour ĐN-HA</span>
+                <span>50.000.000</span>
+            </div>
+            <div class="p-3 flex justify-between text-gray-600">
+                <span>- Thu tất toán Tour Huế</span>
+                <span>100.000.000</span>
+            </div>
+
+            <div class="bg-red-100 p-3 flex justify-between font-bold text-red-800 border-t-2 border-gray-100">
+                <span>DÒNG TIỀN RA</span>
+                <span>- 110.000.000</span>
+            </div>
+            <div class="p-3 border-b flex justify-between text-gray-600">
+                <span>- Thanh toán xe 45 chỗ</span>
+                <span>15.000.000</span>
+            </div>
+            <div class="p-3 border-b flex justify-between text-gray-600">
+                <span>- Thanh toán khách sạn</span>
+                <span>45.000.000</span>
+            </div>
+            <div class="p-3 flex justify-between text-gray-600">
+                <span>- Ứng tiền HDV</span>
+                <span>50.000.000</span>
+            </div>
+
+            <div class="bg-gray-800 p-3 flex justify-between font-bold text-white mt-2 text-base">
+                <span>LƯU CHUYỂN TIỀN THUẦN</span>
+                <span class="text-emerald-400">+ 40.000.000</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home', this)">
+            <i class="fas fa-home"></i><span>Tổng quan</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('scan', this)">
+            <i class="fas fa-expand"></i><span>Scan Bill</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('approve', this)">
+            <i class="fas fa-clipboard-check"></i><span>Duyệt chi</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('report', this)">
+            <i class="fas fa-chart-line"></i><span>Báo cáo</span>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
