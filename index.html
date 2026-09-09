@@ -20,10 +20,10 @@
 
     <!-- Màn hình 0: Danh sách Tour -->
     <div id="screen-tour-list" class="screen active p-4">
-        <h2 class="font-bold text-gray-700 mb-4"><i class="fas fa-list-ul mr-2"></i>Danh sách Tour đang chạy</h2>
+        <h2 class="font-bold text-gray-700 mb-4"><i class="fas fa-list-ul mr-2"></i>Danh sách Tour</h2>
         
         <!-- Tour 1 -->
-        <div onclick="openTour('Đà Nẵng - Hội An 3N2Đ')" class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-emerald-500 cursor-pointer hover:shadow-md transition">
+        <div onclick="openTour('dn-ha')" class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-emerald-500 cursor-pointer hover:shadow-md transition">
             <div class="flex justify-between items-start mb-2">
                 <p class="font-bold text-gray-800">Đà Nẵng - Hội An 3N2Đ</p>
                 <span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded font-bold">Đang chạy</span>
@@ -38,7 +38,7 @@
         </div>
 
         <!-- Tour 2 -->
-        <div onclick="openTour('Bà Nà Hills 1 Ngày')" class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-blue-500 cursor-pointer hover:shadow-md transition">
+        <div onclick="openTour('bana')" class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-blue-500 cursor-pointer hover:shadow-md transition">
             <div class="flex justify-between items-start mb-2">
                 <p class="font-bold text-gray-800">Bà Nà Hills 1 Ngày</p>
                 <span class="bg-blue-100 text-blue-700 text-[10px] px-2 py-1 rounded font-bold">Sắp khởi hành</span>
@@ -51,17 +51,48 @@
                 <span>Đã chi: 10%</span>
             </div>
         </div>
+
+        <!-- Tour 3 -->
+        <div onclick="openTour('phuquoc')" class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-yellow-500 cursor-pointer hover:shadow-md transition">
+            <div class="flex justify-between items-start mb-2">
+                <p class="font-bold text-gray-800">Phú Quốc 4N3Đ</p>
+                <span class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-1 rounded font-bold">Đang chạy</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                <div class="bg-yellow-500 h-2 rounded-full" style="width: 75%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500">
+                <span>Ngân sách: 200tr</span>
+                <span>Đã chi: 75%</span>
+            </div>
+        </div>
+
+        <!-- Tour 4 -->
+        <div onclick="openTour('hue')" class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-gray-500 cursor-pointer hover:shadow-md transition">
+            <div class="flex justify-between items-start mb-2">
+                <p class="font-bold text-gray-800">Huế - Lăng Cô 2N1Đ</p>
+                <span class="bg-gray-100 text-gray-700 text-[10px] px-2 py-1 rounded font-bold">Hoàn tất</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                <div class="bg-gray-500 h-2 rounded-full" style="width: 100%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500">
+                <span>Ngân sách: 40tr</span>
+                <span class="text-gray-500 font-bold">Đã chi: 100%</span>
+            </div>
+        </div>
     </div>
 
     <!-- Màn hình 1: Dashboard (Chi tiết 1 Tour) -->
-    <div id="screen-home" class="screen p-4">
+    <!-- Thêm pb-24 (padding bottom) để phần nội dung không bị thanh menu che khuất -->
+    <div id="screen-home" class="screen p-4 pb-24">
         <div class="flex items-center mb-3">
             <button onclick="backToTourList()" class="text-emerald-600 mr-3 hover:text-emerald-800"><i class="fas fa-arrow-left text-lg"></i></button>
-            <h2 class="font-bold text-gray-700 truncate" id="tour-name-title">Đà Nẵng - Hội An 3N2Đ</h2>
+            <h2 class="font-bold text-gray-700 truncate" id="tour-name-title">Tên Tour</h2>
         </div>
         
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded shadow-sm text-sm font-semibold animate-pulse">
-            <i class="fas fa-exclamation-triangle mr-1"></i> CẢNH BÁO: Đã chi 88% ngân sách dự kiến!
+        <div id="tour-warning" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded shadow-sm text-sm font-semibold animate-pulse hidden">
+            <!-- Cảnh báo sẽ được thêm bằng JS -->
         </div>
 
         <div class="bg-white p-4 rounded-xl shadow-sm mb-4 relative">
@@ -72,32 +103,40 @@
         <div class="grid grid-cols-2 gap-3 text-sm">
             <div class="bg-white p-3 rounded-xl shadow-sm text-center border-t-4 border-blue-400">
                 <p class="text-gray-500 text-xs">Ngân sách (VNĐ)</p>
-                <p class="font-bold text-gray-800 text-lg">100.000.000</p>
+                <p class="font-bold text-gray-800 text-lg" id="tour-budget">0</p>
             </div>
             <div class="bg-white p-3 rounded-xl shadow-sm text-center border-t-4 border-red-400">
                 <p class="text-gray-500 text-xs">Đã chi (VNĐ)</p>
-                <p class="font-bold text-red-600 text-lg">88.000.000</p>
+                <p class="font-bold text-red-600 text-lg" id="tour-spent">0</p>
             </div>
             <div class="bg-white p-3 rounded-xl shadow-sm text-center border-t-4 border-emerald-400 col-span-2">
                 <p class="text-gray-500 text-xs">Số dư khả dụng (VNĐ)</p>
-                <p class="font-bold text-emerald-600 text-xl">12.000.000</p>
+                <p class="font-bold text-emerald-600 text-xl" id="tour-remaining">0</p>
             </div>
         </div>
+
+        <!-- NÚT SCAN BILL NẰM NGAY ĐÂY TRONG TRANG TOUR - ĐÃ LÀM TO VÀ NỔI BẬT HƠN -->
+        <button onclick="openScanBill()" class="w-full mt-6 bg-emerald-600 text-white py-4 rounded-2xl font-bold shadow-lg hover:bg-emerald-700 transition flex items-center justify-center text-lg border-4 border-emerald-200">
+            <i class="fas fa-camera-retro text-2xl mr-3"></i> QUÉT HÓA ĐƠN TOUR NÀY
+        </button>
     </div>
 
     <!-- Màn hình 2: Smart Scanner -->
     <div id="screen-scan" class="screen p-4">
-        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-camera mr-2"></i>Quét chứng từ tự động</h2>
+        <div class="flex items-center mb-4">
+            <button onclick="backToTourFromScan()" class="text-emerald-600 mr-3 hover:text-emerald-800"><i class="fas fa-arrow-left text-lg"></i></button>
+            <h2 class="font-bold text-gray-700">Quét chứng từ tự động</h2>
+        </div>
         
-        <div id="camera-view" class="w-full h-64 bg-gray-800 rounded-xl relative overflow-hidden flex items-center justify-center mb-4">
+        <div id="camera-view" class="w-full h-64 bg-gray-800 rounded-xl relative overflow-hidden flex items-center justify-center mb-4 border-4 border-dashed border-emerald-500">
             <div class="text-gray-400 text-center" id="scan-hint">
                 <i class="fas fa-receipt text-4xl mb-2"></i><br>Đưa hóa đơn vào khung hình
             </div>
             <div id="scan-line" class="scanner-line hidden"></div>
         </div>
 
-        <button onclick="simulateScan()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition duration-200 mb-4">
-            <i class="fas fa-crosshairs mr-2"></i>Chụp & Quét OCR
+        <button onclick="simulateScan()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-4 rounded-xl shadow-md transition duration-200 mb-4 text-lg">
+            <i class="fas fa-crosshairs mr-2"></i> CHỤP & QUÉT OCR
         </button>
 
         <div id="scan-result" class="bg-white p-4 rounded-xl shadow-sm hidden">
@@ -105,11 +144,10 @@
             <div class="space-y-2 text-sm">
                 <div><span class="text-gray-500">Nhà cung cấp:</span> <span class="font-semibold text-gray-800">Khách sạn Mường Thanh ĐN</span></div>
                 <div><span class="text-gray-500">Mã số thuế:</span> <span class="font-semibold text-gray-800">0400123456</span></div>
-                <div><span class="text-gray-500">Ngày tháng:</span> <span class="font-semibold text-gray-800">08/09/2026</span></div>
                 <div><span class="text-gray-500">Hạng mục:</span> <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">Lưu trú</span></div>
-                <div><span class="text-gray-500">Tổng tiền:</span> <span class="font-bold text-red-500">15.500.000 VNĐ</span></div>
+                <div><span class="text-gray-500">Tổng tiền:</span> <span class="font-bold text-red-500 text-lg">15.500.000 VNĐ</span></div>
             </div>
-            <button class="w-full mt-4 bg-gray-800 text-white font-bold py-2 rounded-lg">Xác nhận đưa vào sổ</button>
+            <button onclick="backToTourFromScan()" class="w-full mt-4 bg-gray-800 text-white font-bold py-3 rounded-lg text-base">Lưu vào sổ & Quay lại</button>
         </div>
     </div>
 
@@ -117,7 +155,24 @@
     <div id="screen-approve" class="screen p-4">
         <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-check-double mr-2"></i>Chờ phê duyệt (Kế toán)</h2>
         
-        <div class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-yellow-400 transition-transform duration-300" id="req-1">
+        <!-- Yêu cầu 1: Nhà hàng Biển Đông (Khớp với chi tiết tour) -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-yellow-400 transition-transform duration-300" id="req-bien-dong">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <p class="font-bold text-gray-800 text-sm">HDV Nguyễn Văn A</p>
+                    <p class="text-xs text-gray-500">Thanh toán Nhà hàng Biển Đông (20 suất Hải sản)</p>
+                </div>
+                <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded font-bold">Chờ duyệt</span>
+            </div>
+            <p class="font-bold text-red-500 mb-3">8.200.000 VNĐ</p>
+            <div class="flex justify-between gap-2">
+                <button onclick="approve('req-bien-dong', false)" class="flex-1 bg-red-100 text-red-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-times mr-1"></i>Từ chối</button>
+                <button onclick="approve('req-bien-dong', true)" class="flex-1 bg-emerald-100 text-emerald-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-check mr-1"></i>Đồng ý duyệt</button>
+            </div>
+        </div>
+
+        <!-- Yêu cầu 2: Bà Nà Hills (Đã đổi lại trạng thái cho khớp, hoặc giữ lại nếu muốn mô phỏng khoản khác, nhưng ở đây ta khớp theo đúng yêu cầu Nhà hàng Biển Đông) -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-yellow-400 transition-transform duration-300" id="req-bana">
             <div class="flex justify-between items-start mb-2">
                 <div>
                     <p class="font-bold text-gray-800 text-sm">HDV Nguyễn Văn A</p>
@@ -127,24 +182,22 @@
             </div>
             <p class="font-bold text-red-500 mb-3">9.400.000 VNĐ</p>
             <div class="flex justify-between gap-2">
-                <button onclick="approve('req-1', false)" class="flex-1 bg-red-100 text-red-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-times mr-1"></i>Từ chối</button>
-                <button onclick="approve('req-1', true)" class="flex-1 bg-emerald-100 text-emerald-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-check mr-1"></i>Đồng ý duyệt</button>
+                <button onclick="approve('req-bana', false)" class="flex-1 bg-red-100 text-red-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-times mr-1"></i>Từ chối</button>
+                <button onclick="approve('req-bana', true)" class="flex-1 bg-emerald-100 text-emerald-600 py-2 rounded-lg text-sm font-bold"><i class="fas fa-check mr-1"></i>Đồng ý duyệt</button>
             </div>
         </div>
     </div>
 
-    <!-- Màn hình 4: Báo cáo Chi Tiết (Đã xóa Báo cáo tổng) -->
+    <!-- Màn hình 4: Báo cáo Chi Tiết -->
     <div id="screen-report" class="screen p-4">
         <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-file-invoice-dollar mr-2"></i>Chi tiết Dòng tiền</h2>
         
-        <!-- Màn hình chờ khi chưa chọn khoản mục nào từ biểu đồ -->
         <div id="report-empty" class="bg-white rounded-xl shadow-sm p-6 text-center text-gray-500">
             <i class="fas fa-chart-pie text-4xl mb-3 text-gray-300"></i>
-            <p>Vui lòng chọn một khoản mục từ biểu đồ Tổng quan để xem chi tiết dòng tiền.</p>
+            <p>Vui lòng chọn một khoản mục từ biểu đồ Tổng quan của Tour để xem chi tiết dòng tiền.</p>
             <button onclick="switchTab('home')" class="mt-4 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-lg font-bold text-sm">Quay lại biểu đồ</button>
         </div>
 
-        <!-- Khung hiển thị chi tiết Đối tác (Drill-down từ Chart) -->
         <div id="report-details" class="hidden bg-white rounded-xl shadow-sm overflow-hidden text-sm p-3 border-2 border-dashed border-gray-300">
             <div class="flex justify-between items-center border-b pb-2 mb-3">
                 <h3 class="font-bold text-blue-700 text-base" id="detail-title">Chi tiết Khoản mục</h3>
@@ -153,20 +206,15 @@
                 <!-- Data will be injected here via JS -->
             </div>
             
-            <!-- Nút quay lại trang trước -->
             <button onclick="backToTourDashboard()" class="w-full mt-4 bg-emerald-500 text-white py-3 rounded-xl font-bold shadow hover:bg-emerald-600 transition flex items-center justify-center">
                 <i class="fas fa-arrow-left mr-2"></i> Quay lại trang trước
             </button>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <div id="nav-tour-list" class="nav-item active" onclick="switchTab('tour-list', this)">
             <i class="fas fa-map-marked-alt"></i><span>Các Tour</span>
-        </div>
-        <div id="nav-scan" class="nav-item" onclick="switchTab('scan', this)">
-            <i class="fas fa-expand"></i><span>Scan Bill</span>
         </div>
         <div id="nav-approve" class="nav-item" onclick="switchTab('approve', this)">
             <i class="fas fa-clipboard-check"></i><span>Duyệt chi</span>
