@@ -1,4 +1,4 @@
-// Dữ liệu Tour được nâng cấp với Danh sách Bill chi tiết cho từng hạng mục
+// Dữ liệu Tour được cập nhật đầy đủ thông tin mô tả, trạng thái cho TẤT CẢ các hạng mục
 const toursData = {
     'dn-ha': {
         name: 'Đà Nẵng - Hội An 3N2Đ',
@@ -11,94 +11,85 @@ const toursData = {
                 title: "LƯU TRÚ (45%)", 
                 totalAmount: "39.600.000 VNĐ",
                 bills: [
-                    { supplier: "Khách sạn Mường Thanh Lux", date: "08/09/2026", code: "HD-26-00102", amount: "25.000.000 VNĐ" },
-                    { supplier: "Boutique Resort Hội An", date: "09/09/2026", code: "HD-26-00115", amount: "14.600.000 VNĐ" }
+                    { 
+                        supplier: "Khách sạn Mường Thanh Lux", 
+                        description: "Thanh toán tiền phòng 2 đêm x 10 phòng", 
+                        amount: "25.000.000 VNĐ", 
+                        status: "Đã duyệt"
+                    },
+                    { 
+                        supplier: "Boutique Resort Hội An", 
+                        description: "Phụ thu nhận phòng sớm & dịch vụ Spa", 
+                        amount: "14.600.000 VNĐ", 
+                        status: "Đã duyệt"
+                    }
                 ]
             },
             1: { 
                 title: "VẬN CHUYỂN (35%)", 
                 totalAmount: "30.800.000 VNĐ",
                 bills: [
-                    { supplier: "Vé máy bay Vietjet Air (20 khách)", date: "05/09/2026", code: "VJ-98402", amount: "22.000.000 VNĐ" },
-                    { supplier: "Thuê xe 29 chỗ Hải Vân Travel", date: "08/09/2026", code: "HD-26-00088", amount: "8.800.000 VNĐ" }
+                    { 
+                        supplier: "Vietjet Air", 
+                        description: "Vé máy bay khứ hồi SGN-DAD x 20 khách", 
+                        amount: "22.000.000 VNĐ", 
+                        status: "Đã duyệt"
+                    },
+                    { 
+                        supplier: "Nhà xe Hải Vân Travel", 
+                        description: "Thuê xe 29 chỗ phục vụ đoàn 3N2Đ", 
+                        amount: "8.800.000 VNĐ", 
+                        status: "Đã duyệt"
+                    }
                 ]
             },
             2: { 
                 title: "ĂN UỐNG & VÉ (20%)", 
                 totalAmount: "17.600.000 VNĐ",
                 bills: [
-                    // Thêm invoiceId để chuyển sang trang chi tiết khi bấm vào
-                    { supplier: "Nhà hàng Biển Đông (Tiệc tối)", date: "08/09/2026", code: "HD-26-00142", amount: "8.200.000 VNĐ", invoiceId: "req-bien-dong" },
-                    { supplier: "Sun World Ba Na Hills (Vé cáp)", date: "09/09/2026", code: "HD-26-00889", amount: "9.400.000 VNĐ", invoiceId: "req-bana" }
+                    { 
+                        supplier: "Nhà hàng Biển Đông", 
+                        description: "20 suất Hải sản x 410k", 
+                        amount: "8.200.000 VNĐ", 
+                        status: "Chờ duyệt",
+                        invoiceId: "req-bien-dong" 
+                    },
+                    { 
+                        supplier: "Bà Nà Hills", 
+                        description: "20 vé cáp treo khứ hồi x 470k", 
+                        amount: "9.400.000 VNĐ", 
+                        status: "Chờ duyệt",
+                        invoiceId: "req-bana" 
+                    }
                 ]
             }
         }
     },
-
+    'bana': {
+        name: 'Bà Nà Hills 1 Ngày', 
+        budget: 25000000, 
+        spent: 2500000,
+        chartLabels: ['Đặt cọc vé (100%)'], 
+        chartData: [100],
+        details: { 
+            0: { 
+                title: "ĐẶT CỌC VÉ (100%)", 
+                totalAmount: "2.500.000 VNĐ",
+                bills: [
+                    { 
+                        supplier: "Sun World Ba Na Hills", 
+                        description: "Đặt cọc giữ chỗ vé cáp treo đoàn 10 người", 
+                        amount: "2.500.000 VNĐ", 
+                        status: "Đã duyệt" 
+                    }
+                ]
+            } 
+        }
+    }
 };
 
-
-// Hàm hiển thị danh sách hóa đơn chi tiết khi bấm vào biểu đồ
-// Hàm hiển thị danh sách hóa đơn chi tiết khi bấm vào biểu đồ
-function showReportDetail(index) {
-    const tour = toursData[currentTourId];
-    const categoryData = tour.details[index];
-
-    if (!categoryData) return;
-
-    // Cập nhật tiêu đề hạng mục
-    document.getElementById('detail-title').innerText = categoryData.title;
-
-    // Render danh sách các hóa đơn
-    let billsHtml = `
-        <div class="mb-3 p-2 bg-blue-50 dark:bg-gray-800 rounded-lg flex justify-between items-center border border-blue-100 dark:border-gray-700">
-            <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">Tổng chi hạng mục:</span>
-            <span class="font-bold text-red-500 dark:text-red-400 text-base">${categoryData.totalAmount}</span>
-        </div>
-        <p class="text-xs font-bold text-gray-600 dark:text-gray-300 mb-2">
-            <i class="fas fa-file-invoice mr-1"></i> Danh sách hóa đơn chứng từ (${categoryData.bills.length}):
-        </p>
-        <p class="text-[10px] text-emerald-600 dark:text-emerald-400 italic mb-2">
-            * Bấm vào từng bill bên dưới để xem chi tiết chứng từ & phê duyệt
-        </p>
-        <div class="space-y-2.5">
-    `;
-
-    categoryData.bills.forEach((bill) => {
-        // Gắn sự kiện openInvoiceDetail nếu bill có mã ID chờ duyệt tương ứng
-        const clickAction = bill.invoiceId ? `onclick="openInvoiceDetail('${bill.invoiceId}')"` : '';
-        const cursorStyle = bill.invoiceId ? 'cursor-pointer hover:border-emerald-500 hover:shadow-md' : '';
-
-        billsHtml += `
-            <div ${clickAction} class="p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm transition ${cursorStyle}">
-                <div class="flex justify-between items-start mb-1">
-                    <p class="font-bold text-gray-800 dark:text-gray-100 text-sm flex items-center">
-                        ${bill.supplier}
-                        ${bill.invoiceId ? '<i class="fas fa-chevron-right text-[10px] ml-1.5 text-emerald-500"></i>' : ''}
-                    </p>
-                    <span class="font-bold text-red-500 dark:text-red-400 text-sm">${bill.amount}</span>
-                </div>
-                <div class="flex justify-between text-[11px] text-gray-500 dark:text-gray-400">
-                    <span><i class="far fa-calendar-alt mr-1"></i>${bill.date}</span>
-                    <span class="font-mono bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded">${bill.code}</span>
-                </div>
-            </div>
-        `;
-    });
-
-    billsHtml += `</div>`;
-
-    document.getElementById('detail-content').innerHTML = billsHtml;
-    
-    // Chuyển sang Tab chi tiết báo cáo
-    switchTab('report', document.getElementById('nav-report'));
-    document.getElementById('report-empty').classList.add('hidden');
-    document.getElementById('report-details').classList.remove('hidden');
-}
 let currentTourId = '';
 let expenseChartInstance = null;
-
-
 
 // Hàm chuyển tab
 function switchTab(tabId, element) {
@@ -127,6 +118,7 @@ function openTour(tourId) {
         updateChart(tour.chartLabels, tour.chartData);
     }, 50);
 }
+
 function updateChart(labels, data) {
     const ctx = document.getElementById('expenseChart').getContext('2d');
     if (expenseChartInstance) expenseChartInstance.destroy();
@@ -142,27 +134,22 @@ function updateChart(labels, data) {
                 data: data, 
                 backgroundColor: pieColors,
                 hoverBackgroundColor: pieColors,
-                
                 borderColor: isDark ? '#1f2937' : '#ffffff',
                 borderWidth: 3,
-                
                 hoverBorderColor: isDark ? '#1f2937' : '#ffffff',
                 hoverBorderWidth: 3,
-                
                 hoverOffset: 8
             }] 
         },
         options: { 
             responsive: true,
             maintainAspectRatio: false,
-            
             animation: {
                 animateRotate: true,
                 animateScale: true,
                 duration: 900,
                 easing: 'easeOutBack'
             },
-            
             plugins: { 
                 legend: { 
                     position: 'bottom',
@@ -182,6 +169,60 @@ function updateChart(labels, data) {
             } 
         }
     });
+}
+
+// Hàm hiển thị danh sách hóa đơn chi tiết đồng bộ chuẩn giao diện thẻ đơn giản
+function showReportDetail(index) {
+    const tour = toursData[currentTourId];
+    const categoryData = tour.details[index];
+
+    if (!categoryData) return;
+
+    // Cập nhật tiêu đề màu cam
+    document.getElementById('detail-title').innerHTML = `
+        <span class="text-amber-600 dark:text-amber-500">Chi tiết dòng tiền: ${categoryData.title}</span>
+    `;
+
+    // Render danh sách các hóa đơn
+    let billsHtml = `<div class="space-y-3 mb-4">`;
+
+    categoryData.bills.forEach((bill) => {
+        const clickAction = bill.invoiceId ? `onclick="openInvoiceDetail('${bill.invoiceId}')"` : '';
+        const cursorStyle = bill.invoiceId ? 'cursor-pointer hover:border-amber-400 hover:shadow-md' : '';
+        
+        let statusBg = 'bg-[#fef08a] text-yellow-800 dark:bg-yellow-600 dark:text-yellow-100';
+        if (bill.status === 'Đã duyệt') {
+            statusBg = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-700 dark:text-emerald-100';
+        }
+        
+        const statusHtml = bill.status ? `<span class="${statusBg} text-xs px-2 py-1 rounded font-bold">${bill.status}</span>` : '';
+        const descHtml = bill.description ? `<p class="text-[13px] text-gray-600 dark:text-gray-300 mb-3">${bill.description}</p>` : '';
+
+        billsHtml += `
+            <div ${clickAction} class="p-4 bg-[#fffbeb] dark:bg-gray-800 border border-[#fef08a] dark:border-gray-700 rounded-xl shadow-sm transition ${cursorStyle}">
+                <div class="flex justify-between items-start mb-1">
+                    <p class="font-bold text-gray-800 dark:text-gray-100 text-[15px]">${bill.supplier}</p>
+                    ${statusHtml}
+                </div>
+                ${descHtml}
+                <div class="text-right mt-1">
+                    <span class="font-bold text-red-500 text-base">${bill.amount}</span>
+                </div>
+            </div>
+        `;
+    });
+
+    billsHtml += `</div>
+    <div class="text-right font-bold text-gray-700 dark:text-gray-200 text-sm mb-4">
+        Tổng: ${categoryData.totalAmount}
+    </div>`;
+
+    document.getElementById('detail-content').innerHTML = billsHtml;
+    
+    // Chuyển sang Tab chi tiết báo cáo
+    switchTab('report', document.getElementById('nav-report'));
+    document.getElementById('report-empty').classList.add('hidden');
+    document.getElementById('report-details').classList.remove('hidden');
 }
 
 function toggleNightMode() {
@@ -243,7 +284,6 @@ function approve(id, isApproved) {
 }
 
 // --- LOGIC TRANG CHI TIẾT HÓA ĐƠN ---
-// --- LOGIC TRANG CHI TIẾT HÓA ĐƠN ---
 const pendingInvoicesData = {
     'req-bien-dong': { 
         supplier: 'Nhà hàng Biển Đông', 
@@ -277,7 +317,6 @@ function openInvoiceDetail(invoiceId) {
 
     currentPageInvoiceId = invoiceId;
     
-    // Đổ dữ liệu chi tiết vào các trường mới
     document.getElementById('page-supplier').innerText = data.supplier;
     document.getElementById('page-tax').innerText = data.taxId;
     document.getElementById('page-invoiceNo').innerText = data.invoiceNo;
@@ -294,6 +333,7 @@ function openInvoiceDetail(invoiceId) {
     switchTab('invoice-detail');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 }
+
 function backToApproveList() {
     switchTab('approve', document.getElementById('nav-approve'));
 }
