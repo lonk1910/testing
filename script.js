@@ -1,9 +1,113 @@
-// Xử lý chuyển Tab
+// Chuyển Tab chính từ Bottom Nav
 function switchTab(tabId, element) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + tabId).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    element.classList.add('active');
+    
+    if(element) {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        element.classList.add('active');
+    }
+}
+
+// Từ Danh sách Tour đi vào Chi tiết 1 Tour (Dashboard)
+function openTour(tourName) {
+    document.getElementById('tour-name-title').innerText = tourName;
+    switchTab('home', document.getElementById('nav-tour-list'));
+}
+
+// Từ Dashboard quay lại Danh sách Tour
+function backToTourList() {
+    switchTab('tour-list', document.getElementById('nav-tour-list'));
+}
+
+// Data chi tiết khi bấm vào biểu đồ
+const detailData = {
+    0: { // Lưu trú
+        title: "Chi tiết dòng tiền: LƯU TRÚ (45%)",
+        color: "text-blue-600",
+        html: `
+            <div class="p-3 border rounded-lg bg-blue-50 mb-2 shadow-sm">
+                <div class="flex justify-between items-start">
+                    <p class="font-bold text-gray-800">Khách sạn Mường Thanh ĐN</p>
+                    <span class="bg-blue-200 text-blue-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0400123456</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: Thuê 20 phòng đôi (3 đêm)</p>
+                <p class="font-bold text-red-500 mt-2 text-right">45.000.000 VNĐ</p>
+            </div>
+        `
+    },
+    1: { // Vận chuyển
+        title: "Chi tiết dòng tiền: VẬN CHUYỂN (35%)",
+        color: "text-emerald-600",
+        html: `
+            <div class="p-3 border rounded-lg bg-emerald-50 mb-2 shadow-sm">
+                <div class="flex justify-between items-start">
+                    <p class="font-bold text-gray-800">Nhà xe Hải Vân</p>
+                    <span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0101234599</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: Thuê xe 45 chỗ (3 ngày)</p>
+                <p class="font-bold text-red-500 mt-2 text-right">15.000.000 VNĐ</p>
+            </div>
+            <div class="p-3 border rounded-lg bg-emerald-50 shadow-sm">
+                <div class="flex justify-between items-start">
+                    <p class="font-bold text-gray-800">Vietjet Air (Đại lý)</p>
+                    <span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0102345678</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: Vé máy bay khứ hồi (20 khách)</p>
+                <p class="font-bold text-red-500 mt-2 text-right">20.000.000 VNĐ</p>
+            </div>
+        `
+    },
+    2: { // Ăn uống
+        title: "Chi tiết dòng tiền: ĂN UỐNG & VÉ (20%)",
+        color: "text-amber-600",
+        html: `
+            <div class="p-3 border rounded-lg bg-amber-50 mb-2 shadow-sm">
+                <div class="flex justify-between items-start">
+                    <p class="font-bold text-gray-800">Nhà hàng Biển Đông</p>
+                    <span class="bg-yellow-200 text-yellow-800 text-[10px] px-2 py-1 rounded font-bold">Chờ duyệt</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0400987654</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: 20 suất Hải sản + Nước uống</p>
+                <p class="font-bold text-red-500 mt-2 text-right">8.200.000 VNĐ</p>
+            </div>
+            <div class="p-3 border rounded-lg bg-amber-50 shadow-sm">
+                <div class="flex justify-between items-start">
+                    <p class="font-bold text-gray-800">Bà Nà Hills (Sun World)</p>
+                    <span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">Đã TT</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1"><i class="fas fa-file-invoice mr-1"></i>MST: 0401112223</p>
+                <p class="text-sm mt-1 text-gray-700">Hạng mục: 20 vé cáp treo khứ hồi</p>
+                <p class="font-bold text-red-500 mt-2 text-right">11.800.000 VNĐ</p>
+            </div>
+        `
+    }
+};
+
+// Hiển thị chi tiết Drill-down vào mục Báo Cáo
+function showReportDetail(index) {
+    // Chuyển sang tab Báo cáo
+    switchTab('report', document.getElementById('nav-report'));
+    
+    // Đổ dữ liệu
+    const data = detailData[index];
+    const titleEl = document.getElementById('detail-title');
+    titleEl.innerText = data.title;
+    titleEl.className = "font-bold text-base " + data.color;
+    document.getElementById('detail-content').innerHTML = data.html;
+    
+    // Ẩn tổng quan, hiện chi tiết
+    document.getElementById('report-overview').classList.add('hidden');
+    document.getElementById('report-details').classList.remove('hidden');
+}
+
+// Đóng chi tiết, quay lại tổng quan báo cáo
+function closeDetails() {
+    document.getElementById('report-details').classList.add('hidden');
+    document.getElementById('report-overview').classList.remove('hidden');
 }
 
 // Xử lý giả lập quét OCR
@@ -23,7 +127,6 @@ function simulateScan() {
     }, 2000);
 }
 
-// Xử lý giả lập Duyệt/Từ chối
 function approve(id, isApproved) {
     const el = document.getElementById(id);
     if(isApproved) {
@@ -34,7 +137,7 @@ function approve(id, isApproved) {
     setTimeout(() => { el.style.display = 'none'; }, 2000);
 }
 
-// Vẽ biểu đồ tròn bằng Chart.js
+// Vẽ biểu đồ tròn & Gắn sự kiện click
 document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('expenseChart');
     if (canvas) {
@@ -46,12 +149,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     data: [45, 35, 20],
                     backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
-                    borderWidth: 0
+                    borderWidth: 2,
+                    hoverOffset: 10 // Phóng to khi trỏ chuột vào
                 }]
             },
             options: {
                 responsive: true,
-                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } }
+                plugins: { 
+                    legend: { position: 'bottom', labels: { boxWidth: 12 } }
+                },
+                // Bắt sự kiện Click vào biểu đồ (Drill-down)
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        showReportDetail(index);
+                    }
+                }
             }
         });
     }

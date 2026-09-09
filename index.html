@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danang Green Travel MVP</title>
+    <title>Danang Green Travel MVP - V2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,21 +13,72 @@
 
 <div class="app-container">
     <!-- Header -->
-    <div class="bg-emerald-500 text-white p-4 text-center font-bold text-lg rounded-t-3xl shadow-md z-10">
-        Danang Green Travel
+    <div class="bg-emerald-500 text-white p-4 text-center font-bold text-lg rounded-t-3xl shadow-md z-10 flex justify-between items-center">
+        <span>Danang Green Travel</span>
+        <i class="fas fa-bell"></i>
     </div>
 
-    <!-- Màn hình 1: Dashboard -->
-    <div id="screen-home" class="screen active p-4">
-        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-chart-pie mr-2"></i>Tổng quan dòng tiền Tour</h2>
+    <!-- Màn hình 0: Danh sách Tour (Mới) -->
+    <div id="screen-tour-list" class="screen active p-4">
+        <h2 class="font-bold text-gray-700 mb-4"><i class="fas fa-list-ul mr-2"></i>Danh sách Tour đang chạy</h2>
         
-        <!-- Cảnh báo vượt ngân sách -->
+        <!-- Tour 1 -->
+        <div onclick="openTour('Đà Nẵng - Hội An 3N2Đ')" class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-emerald-500 cursor-pointer hover:shadow-md transition">
+            <div class="flex justify-between items-start mb-2">
+                <p class="font-bold text-gray-800">Đà Nẵng - Hội An 3N2Đ</p>
+                <span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded font-bold">Đang chạy</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                <div class="bg-red-500 h-2 rounded-full" style="width: 88%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500">
+                <span>Ngân sách: 100tr</span>
+                <span class="text-red-500 font-bold">Đã chi: 88%</span>
+            </div>
+        </div>
+
+        <!-- Tour 2 -->
+        <div onclick="openTour('Bà Nà Hills 1 Ngày')" class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-blue-500 cursor-pointer hover:shadow-md transition">
+            <div class="flex justify-between items-start mb-2">
+                <p class="font-bold text-gray-800">Bà Nà Hills 1 Ngày</p>
+                <span class="bg-blue-100 text-blue-700 text-[10px] px-2 py-1 rounded font-bold">Sắp khởi hành</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                <div class="bg-blue-500 h-2 rounded-full" style="width: 10%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500">
+                <span>Ngân sách: 25tr</span>
+                <span>Đã chi: 10%</span>
+            </div>
+        </div>
+
+        <!-- Tour 3 -->
+        <div class="bg-gray-50 p-4 rounded-xl shadow-sm mb-3 border-l-4 border-gray-400 opacity-70">
+            <div class="flex justify-between items-start mb-2">
+                <p class="font-bold text-gray-600">Huế - Phong Nha 4N3Đ</p>
+                <span class="bg-gray-200 text-gray-600 text-[10px] px-2 py-1 rounded font-bold">Đã kết thúc</span>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500 mt-2 border-t pt-2">
+                <span>Ngân sách: 80tr</span>
+                <span class="text-emerald-600 font-bold">Thực chi: 75tr</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Màn hình 1: Dashboard (Chi tiết 1 Tour) -->
+    <div id="screen-home" class="screen p-4">
+        <div class="flex items-center mb-3">
+            <button onclick="backToTourList()" class="text-emerald-600 mr-3 hover:text-emerald-800"><i class="fas fa-arrow-left text-lg"></i></button>
+            <h2 class="font-bold text-gray-700 truncate" id="tour-name-title">Đà Nẵng - Hội An 3N2Đ</h2>
+        </div>
+        
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded shadow-sm text-sm font-semibold animate-pulse">
             <i class="fas fa-exclamation-triangle mr-1"></i> CẢNH BÁO: Đã chi 88% ngân sách dự kiến!
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
-            <canvas id="expenseChart" width="200" height="200"></canvas>
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-4 relative">
+            <p class="text-center text-xs text-gray-400 mb-2">(Bấm vào các phần của biểu đồ để xem chi tiết đối tác)</p>
+            <canvas id="expenseChart" width="200" height="200" class="cursor-pointer"></canvas>
         </div>
 
         <div class="grid grid-cols-2 gap-3 text-sm">
@@ -78,7 +129,6 @@
     <div id="screen-approve" class="screen p-4">
         <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-check-double mr-2"></i>Chờ phê duyệt (Kế toán)</h2>
         
-        <!-- Yêu cầu 1 -->
         <div class="bg-white p-4 rounded-xl shadow-sm mb-3 border-l-4 border-yellow-400 transition-transform duration-300" id="req-1">
             <div class="flex justify-between items-start mb-2">
                 <div>
@@ -94,7 +144,6 @@
             </div>
         </div>
 
-        <!-- Yêu cầu 2 -->
         <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-400" id="req-2">
             <div class="flex justify-between items-start mb-2">
                 <div>
@@ -113,9 +162,10 @@
 
     <!-- Màn hình 4: Báo cáo -->
     <div id="screen-report" class="screen p-4">
-        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-file-invoice-dollar mr-2"></i>Báo cáo Dòng tiền Trực tiếp</h2>
+        <h2 class="font-bold text-gray-700 mb-3"><i class="fas fa-file-invoice-dollar mr-2"></i>Báo cáo Dòng tiền</h2>
         
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden text-sm">
+        <!-- Tổng quan báo cáo (ẩn khi hiển thị chi tiết Drill-down) -->
+        <div id="report-overview" class="bg-white rounded-xl shadow-sm overflow-hidden text-sm">
             <div class="bg-emerald-100 p-3 flex justify-between font-bold text-emerald-800">
                 <span>DÒNG TIỀN VÀO</span>
                 <span>+ 150.000.000</span>
@@ -151,20 +201,32 @@
                 <span class="text-emerald-400">+ 40.000.000</span>
             </div>
         </div>
+
+        <!-- Khung hiển thị chi tiết Đối tác (Drill-down từ Chart) -->
+        <div id="report-details" class="hidden bg-white rounded-xl shadow-sm overflow-hidden text-sm p-3 border-2 border-dashed border-gray-300">
+            <div class="flex justify-between items-center border-b pb-2 mb-3">
+                <h3 class="font-bold text-blue-700 text-base" id="detail-title">Chi tiết Khoản mục</h3>
+                <button onclick="closeDetails()" class="text-gray-400 hover:text-red-500 bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="detail-content" class="space-y-3">
+                <!-- Data will be injected here via JS -->
+            </div>
+            <button onclick="closeDetails()" class="w-full mt-3 bg-gray-100 text-gray-600 py-2 rounded-lg font-bold text-xs hover:bg-gray-200">Quay lại Báo cáo tổng</button>
+        </div>
     </div>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)">
-            <i class="fas fa-home"></i><span>Tổng quan</span>
+        <div id="nav-tour-list" class="nav-item active" onclick="switchTab('tour-list', this)">
+            <i class="fas fa-map-marked-alt"></i><span>Các Tour</span>
         </div>
-        <div class="nav-item" onclick="switchTab('scan', this)">
+        <div id="nav-scan" class="nav-item" onclick="switchTab('scan', this)">
             <i class="fas fa-expand"></i><span>Scan Bill</span>
         </div>
-        <div class="nav-item" onclick="switchTab('approve', this)">
+        <div id="nav-approve" class="nav-item" onclick="switchTab('approve', this)">
             <i class="fas fa-clipboard-check"></i><span>Duyệt chi</span>
         </div>
-        <div class="nav-item" onclick="switchTab('report', this)">
+        <div id="nav-report" class="nav-item" onclick="switchTab('report', this)">
             <i class="fas fa-chart-line"></i><span>Báo cáo</span>
         </div>
     </div>
